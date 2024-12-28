@@ -1,5 +1,37 @@
 class Pet:
-    pass
+    
+    PET_TYPES = ['dog', 'cat', 'rodent', 'bird', 'reptile', 'exotic']
+    
+    all = []
+    
+    def __init__(self, name, pet_type, owner=None):
+        self.name = name
+        self.pet_type = pet_type
+        self.owner = owner
+        Pet.all.append(self)
+        
+    @property
+    def pet_type(self):
+        return self._pet_type
+    
+    @pet_type.setter
+    def pet_type(self, pet_type):
+        if pet_type not in Pet.PET_TYPES:
+            raise Exception("Pet must have pet_type matching one of the items in the PET_TYPES list")
+        self._pet_type = pet_type
 
 class Owner:
-    pass
+    def __init__(self, name):
+        self.name = name
+        
+    def pets(self):
+        my_pets = [pet for pet in Pet.all if pet.owner == self]
+        return my_pets
+    
+    def add_pet(self, pet):
+        pet.owner = self
+        
+    def get_sorted_pets(self):
+        pets = self.pets()
+        sorted_pets = sorted(pets, key = lambda pet: pet.name)
+        return sorted_pets
